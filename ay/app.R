@@ -80,12 +80,12 @@ cbp4<- c("#97aed4")
 cbp5 <- c("#1bce9b","#97aed4", "#1a7158")
 
 ### NEED TO FIGURE OUT WHY IT'S NOT WORKING WITH GITHUB FOLDER ### 
-#b64 <- base64enc::dataURI(file="FP2030_Logo_primary_color.png", mime="image/png")
+b64 <- base64enc::dataURI(file="FP2030_Logo_primary_color.png", mime="image/png")
 
 # Define UI for application 
 ui <- navbarPage(                  
   #the line of code places the logo on the left hand side before the tabs start. See image below.
-  title = div(img(src='FP2030_Logo_primary_color.png',style="margin-top: -14px; padding-right:10px;padding-bottom:10px", height = 60)),
+  title = div(img(src=b64,style="margin-top: -14px; padding-right:10px;padding-bottom:10px", height = 60)),
   #builds Tab for Profile Page
   tabPanel("How to Use",
            HTML(
