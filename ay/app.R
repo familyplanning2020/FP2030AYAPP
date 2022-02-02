@@ -20,8 +20,8 @@ library(shinyBS)
 library(DT)
 library(cowplot)
 
-setwd("I:/FP2020/DPM/Progress Report/2021 Data Report/Data/Adolescent and Youth/AY APP Data Files/FP2020AYApp")
-aypopdata <- read_excel("ay/Data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYPOP")
+#setwd("C:/Users/ybai/OneDrive - United Nations Foundation/Documents/GitHub/FP2030AYAPP/ay")
+aypopdata <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYPOP")
 aypopdata$sum_10_49 =rowSums(aypopdata[,2:3])
 aypopdata$prop10_14 =round((aypopdata$`Young Adolescents (10-14)`/aypopdata$sum_10_49)*100,1)
 aypopdata$prop15_19 =round((aypopdata$`Older Adolescents (15-19)`/aypopdata$sum_10_49)*100,1)
@@ -38,8 +38,8 @@ aypopdata.long <- cbind(aypopdata.prop, aypopdata.sum)
 aypopdata.long$survey = sample(100, size = nrow(aypopdata.long), replace = TRUE)
 #aypopdata.long =aypopdata.long[, -16]
 
-kle_age <- read_excel("ay/Data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "KLEAgeEvents")
-kle_marriage <- read_excel("ay/Data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "KLEMarriage")
+kle_age <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "KLEAgeEvents")
+kle_marriage <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "KLEMarriage")
 kle_marriage$`% of 15-19 year olds who are married`=round(kle_marriage$`% of 15-19 year olds who are married`*100,1)
 kle_marriage$`% of 20-24 year olds who are married`=round(kle_marriage$`% of 20-24 year olds who are married`*100,1)
 kle_marriage$`% of adolescent and youth (15-24) who are married`=round(kle_marriage$`% of adolescent and youth (15-24) who are married`*100,1)
@@ -51,7 +51,7 @@ kle_marriage=kle_marriage[, -c(5)]
 kle_marriage$`% of adolescent and youth (15-24) who are married`=data
 colnames(kle_marriage)[6]="% of 25-29 year olds married before 18"
 
-ayfp <- read_excel("ay/Data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYFPUse")
+ayfp <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYFPUse")
 ayfp$`MCPR for married adolescent and youth (15-24)`= round(ayfp$`MCPR for married adolescent and youth (15-24)`, 1)
 
 # Round the counts of AY popualtion & WRA Population  ==> SHIZA DID THIS <== 
@@ -80,7 +80,7 @@ cbp4<- c("#97aed4")
 cbp5 <- c("#1bce9b","#97aed4", "#1a7158")
 
 ### NEED TO FIGURE OUT WHY IT'S NOT WORKING WITH GITHUB FOLDER ### 
-b64 <- base64enc::dataURI(file="FP2030_Logo_primary_color.png", mime="image/png")
+b64 <- base64enc::dataURI(file="www/FP2030_Logo_primary_color.png", mime="image/png")
 
 # Define UI for application 
 ui <- navbarPage(                  
