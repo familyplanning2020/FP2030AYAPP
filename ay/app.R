@@ -20,7 +20,7 @@ library(shinyBS)
 library(DT)
 library(cowplot)
 
-#setwd("C:/Users/sfarid/Documents/FP2030AYAPP/ay")
+setwd("C:/Users/sfarid/Documents/FP2030AYAPP/ay")
 aypopdata <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYPOP")
 aypopdata$sum_10_49 =rowSums(aypopdata[,2:3])
 aypopdata$prop10_14 =round((aypopdata$`Young Adolescents (10-14)`/aypopdata$sum_10_49)*100,1)
@@ -37,6 +37,7 @@ aypopdata.sum=aypopdata.sum[, 13]
 aypopdata.long <- cbind(aypopdata.prop, aypopdata.sum)
 aypopdata.long$survey = sample(100, size = nrow(aypopdata.long), replace = TRUE)
 #aypopdata.long =aypopdata.long[, -16]
+aypopdata.long2=aypopdata.long
 
 kle_age <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "KLEAgeEvents")
 kle_marriage <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "KLEMarriage")
@@ -59,6 +60,9 @@ ayfp$`MCPR for married adolescent and youth (15-24)`= round(ayfp$`MCPR for marri
 aypopdata$Round_Count_WRA <- round(aypopdata$`Women of Reproductive Age (15-49)`, -5)
 
 res <- aypopdata.long %>% filter(aypopdata.long$Country == "India")
+
+
+countries <- unique(aypopdata.long$Country)
 
 #FP2030 Color Palette - Graphs 
 #AY Population Graph = cbp1 
@@ -235,12 +239,13 @@ ui <- navbarPage(
            fluidRow(
              column(6,
                     wellPanel(
-                      selectizeInput("country",
+                      selectizeInput("country_compare",
                                      "Select Up to 4 Countries to Compare",
                                      choices = as.list(aypopdata.long$Country),
                                      multiple = TRUE,
                                      options = list(maxItems = 4))
                     )
+
              ),
              column(6,
              )),
@@ -292,6 +297,7 @@ ui <- navbarPage(
 
 # Draw Bargraphs and Figures
 server <- function(input, output) {
+  #add reactive for plots to change for each panel 
   
   #for graph reactive downloads 
   vals <- reactiveValues()
@@ -441,7 +447,7 @@ server <- function(input, output) {
             axis.line.x =element_blank(),
             legend.position = "right")+
       coord_flip()+ scale_y_reverse() +
-      labs(caption="Source: UN Population Division 2020", size=7) 
+      labs(caption="Source: UN Population Division 2021", size=7) 
     
     vals$bar_one <- bar_one
     print(bar_one)
@@ -942,16 +948,19 @@ server <- function(input, output) {
     })
   
   ay_res_compare <- reactive({
-    res %>% filter(Country %in% input$country) # we need to this 
+    res <- aypopdata.long2 %>% filter(Country %in% input$country_compare) # we need to this
     req(nrow(res) > 0)
     res
   })
-  
+
   output$graph12 <- renderPlot({
-    bar_one <- (ggplot(ay_res_compare(), aes(Country, Count, fill = Age_Group)) + geom_bar(stat = "identity") + 
+    #req(input$country)
+    #if (identical(input$country, "")) return(NULL)
+    #data = filter(aypopdata.long , Country %in% input$country)
+    bar_one_new <- (ggplot(ay_res_compare(), aes(Country, Count, fill = Age_Group)) + geom_bar(stat = "identity") +
                   geom_text(aes(label=paste0(Count,"%", " ", "(", (round(Round_Total/1000000,1))," ", "Million", ")")), color="black", size=3.5, position = position_stack(vjust = 0.5))) +
       theme_classic() +
-      scale_fill_manual(values = cbp2, labels = c("Young Adolescents (10-14)", "Older Adolescents (15-19)","Older Youth (20-24)"), name = "Age Group") + 
+      scale_fill_manual(values = cbp2, labels = c("Young Adolescents (10-14)", "Older Adolescents (15-19)","Older Youth (20-24)"), name = "Age Group") +
       theme(axis.line.y=element_blank(),
             axis.text.y=element_blank(),
             axis.title.y=element_blank(),
@@ -962,22 +971,37 @@ server <- function(input, output) {
             axis.line.x =element_blank(),
             legend.position = "right")+
       coord_flip()+ scale_y_reverse() +
-      labs(caption="Source: UN Population Division 2020", size=7) 
-    
-    # vals$bar_one <- bar_one_new
-    # print(bar_one_new)
-    
-    
+      labs(caption="Source: UN Population Division 2021", size=7)
+
+    vals$bar_one <- bar_one_new
+    print(bar_one_new)
+
+
   })
-  # output$downloadGraph <- downloadHandler(
-  #     filename = function() {
-  #         paste("Adolescents and Youth", "png", sep = ".")
-  #     }, 
-  #     content = function(file) {
-  #         png(file, width = 980, height = 400) 
-  #         print(vals$bar_one)
-  #         dev.off()
-  #     })
+  output$downloadGraph <- downloadHandler(
+      filename = function() {
+          paste("Adolescents and Youth", "png", sep = ".")
+      },
+      content = function(file) {
+          png(file, width = 980, height = 400)
+          print(vals$bar_one_new)
+          dev.off()
+      })
+
+  
+  # ay_res_compare <- reactive({
+  #   res <- aypopdata.long2 %>% filter(Country %in% input$country_compare) # we need to do this
+  #   req(nrow(res) > 0)
+  #   res
+  # })
+  # 
+  # output$graph12 <- renderPlotly({
+  #   bar_one <- (plot_ly(ay_res_compare(), x=~Country, y=~Count, type='bar')) 
+  #   # filter(Country %in% input$country) %>%
+  #   #   group_by(Country))
+  #   bar_one 
+  # })
+  
   
 }
 
