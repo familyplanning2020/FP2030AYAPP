@@ -20,7 +20,7 @@ library(shinyBS)
 library(DT)
 library(cowplot)
 
-setwd("C:/Users/sfarid/Documents/FP2030AYAPP/ay")
+setwd("C:/Users/sfarid/OneDrive - United Nations Foundation/Documents/FP2030AYAPP/ay")
 aypopdata <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYPOP")
 aypopdata$sum_10_49 =rowSums(aypopdata[,2:3])
 aypopdata$prop10_14 =round((aypopdata$`Young Adolescents (10-14)`/aypopdata$sum_10_49)*100,1)
@@ -54,6 +54,7 @@ colnames(kle_marriage)[6]="% of 25-29 year olds married before 18"
 
 ayfp <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYFPUse")
 ayfp$`MCPR for married adolescent and youth (15-24)`= round(ayfp$`MCPR for married adolescent and youth (15-24)`, 1)
+ayfp_compare=ayfp
 
 # Round the counts of AY popualtion & WRA Population  ==> SHIZA DID THIS <== 
 # aypopdata.long$Round_Count <- round(aypopdata.long$Count, -5)
@@ -245,7 +246,7 @@ ui <- navbarPage(
                                      multiple = TRUE,
                                      options = list(maxItems = 4))
                     )
-
+                    
              ),
              column(6,
              )),
@@ -255,8 +256,19 @@ ui <- navbarPage(
                      h3("Adolescent & Youth Population", style='display:inline; margin: 0px 0px 10px 17px'), uiOutput("info12", inline = TRUE), downloadButton("downloadGraph12", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 0px 17px; font-size:90%'), '<br/>'
                )
              ),
+             column(6,plotOutput("graph12", width = "75%", height = "150px")    
+             ),
              column(6,
-                    plotOutput("graph12", width = "75%", height = "150px")    
+             ),
+           ),
+           fluidRow(
+             HTML(
+               paste('<br/>',
+                     h3("Prevalence of Sexual Activity in the Last Month", style = 'display:inline; margin: 0px 0px 10px 17px'),uiOutput("info13", inline = TRUE), downloadButton("downloadGraph13", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 0px 17px; font-size:90%'), '<br/>'
+               )
+             ),
+             column(6,
+                    plotOutput("graph13", width = "75%", height = "400px")
              ),
              column(6,
              ),
@@ -433,21 +445,21 @@ server <- function(input, output) {
   })
   
   output$graph <- renderPlot({
-    bar_one <- (ggplot(ay_res(), aes(Country, Count, fill = Age_Group)) + geom_bar(stat = "identity") + 
-                  geom_text(aes(label=paste0(Count,"%", " ", "(", (round(Round_Total/1000000,1))," ", "Million", ")")), color="black", size=3.5, position = position_stack(vjust = 0.5))) +
-      theme_classic() +
-      scale_fill_manual(values = cbp2, labels = c("Young Adolescents (10-14)", "Older Adolescents (15-19)","Older Youth (20-24)"), name = "Age Group") + 
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.y=element_blank(),
-            axis.title.x = element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "right")+
-      coord_flip()+ scale_y_reverse() +
-      labs(caption="Source: UN Population Division 2021", size=7) 
+    bar_one <- (ggplot(ay_res(), aes(fill=Age_Group, y=Country, x=Count)) + 
+                  geom_bar(position="stack", stat="identity") +
+                  geom_text(aes(label=paste0(Count,"%", " ", "(", (round(Round_Total/1000000,1))," ", "Million", ")")), position=position_stack(vjust=0.5),colour = "black")+
+                  theme_classic() +
+                  scale_fill_manual(values = cbp2, labels = c("Young Adolescents (10-14)", "Older Adolescents (15-19)","Older Youth (20-24)"), name = "Age Group") +
+                  theme(axis.line.y=element_blank(),
+                        #axis.text.y=element_blank(),
+                        axis.title.y=element_blank(),
+                        axis.title.x = element_blank(),
+                        axis.ticks.y=element_blank(),
+                        axis.text.x =element_blank(),
+                        axis.ticks.x =element_blank(),
+                        axis.line.x =element_blank(),
+                        legend.position = "right") +
+                  labs(caption="Source: UN Population Division 2021", size=7))
     
     vals$bar_one <- bar_one
     print(bar_one)
@@ -500,10 +512,6 @@ server <- function(input, output) {
   
   output$sex_activity_graph <- renderPlot({
     source<- ayfp_sex_res()
-    # validate(
-    #   need(nrow(ayfp_sex_res()) > 0, "No data for this selection.")
-    # )
-    
     sex_act <- (ggplot(subset(ayfp_sex_res(), `Percent`>0), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`)) + geom_bar(stat = "identity"))+
       coord_flip() + theme_classic() + 
       geom_text(aes(label=`Percent`), color="black", size=3.5) + 
@@ -952,55 +960,87 @@ server <- function(input, output) {
     req(nrow(res) > 0)
     res
   })
-
-  output$graph12 <- renderPlot({
-    #req(input$country)
-    #if (identical(input$country, "")) return(NULL)
-    #data = filter(aypopdata.long , Country %in% input$country)
-    bar_one_new <- (ggplot(ay_res_compare(), aes(Country, Count, fill = Age_Group)) + geom_bar(stat = "identity") +
-                  geom_text(aes(label=paste0(Count,"%", " ", "(", (round(Round_Total/1000000,1))," ", "Million", ")")), color="black", size=3.5, position = position_stack(vjust = 0.5))) +
-      theme_classic() +
-      scale_fill_manual(values = cbp2, labels = c("Young Adolescents (10-14)", "Older Adolescents (15-19)","Older Youth (20-24)"), name = "Age Group") +
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.y=element_blank(),
-            axis.title.x = element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "right")+
-      coord_flip()+ scale_y_reverse() +
-      labs(caption="Source: UN Population Division 2021", size=7)
-
-    vals$bar_one <- bar_one_new
-    print(bar_one_new)
-
-
-  })
-  output$downloadGraph <- downloadHandler(
-      filename = function() {
-          paste("Adolescents and Youth", "png", sep = ".")
-      },
-      content = function(file) {
-          png(file, width = 980, height = 400)
-          print(vals$bar_one_new)
-          dev.off()
-      })
-
   
-  # ay_res_compare <- reactive({
-  #   res <- aypopdata.long2 %>% filter(Country %in% input$country_compare) # we need to do this
-  #   req(nrow(res) > 0)
-  #   res
-  # })
-  # 
-  # output$graph12 <- renderPlotly({
-  #   bar_one <- (plot_ly(ay_res_compare(), x=~Country, y=~Count, type='bar')) 
-  #   # filter(Country %in% input$country) %>%
-  #   #   group_by(Country))
-  #   bar_one 
-  # })
+  
+  output$graph12 <- renderPlot({
+    bar_one_new <- (ggplot(ay_res_compare(), aes(fill=Age_Group, y=Country, x=Count)) + 
+                      geom_bar(position="stack", stat="identity") +
+                      geom_text(aes(label=paste0(Count,"%", " ", "(", (round(Round_Total/1000000,1))," ", "Million", ")")), position=position_stack(vjust=0.5),colour = "black")+
+                      theme_classic() +
+                      scale_fill_manual(values = cbp2, labels = c("Young Adolescents (10-14)", "Older Adolescents (15-19)","Older Youth (20-24)"), name = "Age Group") +
+                      theme(axis.line.y=element_blank(),
+                            #axis.text.y=element_blank(),
+                            axis.title.y=element_blank(),
+                            axis.title.x = element_blank(),
+                            axis.ticks.y=element_blank(),
+                            axis.text.x =element_blank(),
+                            axis.ticks.x =element_blank(),
+                            axis.line.x =element_blank(),
+                            legend.position = "right") +
+                      labs(caption="Source: UN Population Division 2021", size=7))
+    
+    vals$bar_one_new <- bar_one_new
+    print(bar_one_new)
+    
+    
+  })
+  output$downloadGraph12 <- downloadHandler(
+    filename = function() {
+      paste("Adolescents and Youth_Compare", "png", sep = ".")
+    },
+    content = function(file) {
+      png(file, width = 980, height = 400)
+      print(vals$bar_one_new)
+      dev.off()
+    })
+  
+  
+  #Recent Sexual Activity 
+  ayfp_sex_res_compare <- reactive({
+    res4 <- ayfp_compare %>% select(2,3,6,7)  %>% filter(Country %in% input$country_compare)
+    req(nrow(res4) > 0)
+    res4$"15-19" <- res4$"Recent sex older adolescents aged 15-19"
+    res4$"20-24" <- res4$"Recent sex older youth aged 20-24"
+    #res4 <- res4[,-1:-3]
+    res4.long <- res4 %>% gather("Age.Group", "Percent","15-19" , "20-24") 
+    res4.long
+    res4.long %>% filter(res4.long$Percent>0)
+    
+  })
+  
+  output$graph13 <- renderPlot({
+    source<- ayfp_sex_res_compare()
+    sex_act_compare <- (ggplot(ayfp_sex_res_compare(), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
+      geom_bar(stat = "identity")+
+      theme_classic() + coord_flip() +
+      geom_text(aes(label=`Percent`), color="black", size=3.5) + 
+      scale_fill_manual(values = cbp3, name = "Age Group") + 
+      labs(title = "% Sexually Active (Last Month)") +  
+      facet_grid(vars(Country)) +theme(axis.line.y=element_blank(), axis.text.y=element_blank(),
+                                       axis.title.x=element_blank(),
+                                       axis.title.y=element_blank(),
+                                       axis.ticks.y=element_blank(),
+                                       axis.text.x =element_blank(),
+                                       axis.ticks.x =element_blank(),
+                                       axis.line.x =element_blank(),
+                                       legend.position = "bottom") #+ labs(caption=paste0("Source: ",source$Source), size=7) 
+    
+    
+    
+    vals$sex_act_compare <- sex_act_compare
+    print(sex_act_compare)
+    
+    
+  })
+  output$downloadGraph13 <- downloadHandler(
+    filename = function() {
+      paste("Adolescents and Youth_Compare", "png", sep = ".")
+    },
+    content = function(file) {
+      png(file, width = 980, height = 400)
+      print(vals$sex_act_compare)
+      dev.off()
+    })
   
   
 }
