@@ -1,3 +1,11 @@
+Hey Yacine, 
+
+I fixed the download button for the AY Pop data graph and added in the sexual activity graph and download button. Can you please add at least three additional graphs by our meeting July 15? 
+  
+  I pushed the code to Github so please use the “pull” function to get the latest code. I copied and pasted it below as well. 
+
+Shiza 
+
 # 
 # list.of.packages <- c("shiny", "dplyr", "ggplot2", "tidyr",
 #                       "readxl", "formattable", "plotly", "gt",
@@ -20,7 +28,7 @@ library(shinyBS)
 library(DT)
 library(cowplot)
 
-setwd("C:/Users/ybai/Downloads/FP2030AYAPP/ay")
+setwd("C:/Users/sfarid/OneDrive - United Nations Foundation/Documents/FP2030AYAPP/ay")
 aypopdata <- read_excel("data/CleanedAYData_2021_ProgressReport.xlsx", sheet = "AYPOP")
 aypopdata$sum_10_49 =rowSums(aypopdata[,2:3])
 aypopdata$prop10_14 =round((aypopdata$`Young Adolescents (10-14)`/aypopdata$sum_10_49)*100,1)
@@ -222,9 +230,9 @@ ui <- navbarPage(
                     tags$hr(height = "2px"),
                     tags$h4("More Info"),
                     tags$p(""), "If you woud like to learn more, the A&Y dataset used to create this App can be found on the ",
-                    tags$a(href = "https://www.fp2030.org/data-hub/progress", "FP2030 Site"),
+                    tags$a(href = https://www.fp2030.org/data-hub/progress, "FP2030 Site"),
                     tags$p(""), "The code used to create this App can be found on our",
-                    tags$a(href = "https://github.com/familyplanning2020/FP2030AYAPP", "GitHub Account"),
+                    tags$a(href = https://github.com/familyplanning2020/FP2030AYAPP, "GitHub Account"),
                     tags$p(""), "This app only includes data for low and lower-middle income countries as classified by the World Bank." ,
              ),  
            )
@@ -264,63 +272,13 @@ ui <- navbarPage(
            fluidRow(
              HTML(
                paste('<br/>',
-                     h3("Prevalence of Sexual Activity in the Last Month", style = 'display:inline; margin: 0px 0px 10px 17px'),uiOutput("info13", inline = TRUE), '<br/>')
-             ),
-             column(6, downloadButton("downloadGraph13", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 0px 17px; font-size:90%'),
-                    plotOutput("graph13", width = "75%", height = "400px") 
-             ),
-             column(6, downloadButton("downloadGraph14", "Download Graph", style='display:block; height: 30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 0px 17px; font-size:90%'),
-                    plotOutput("graph14", width = "75%", height = "400px")
+                     h3("Prevalence of Sexual Activity in the Last Month", style = 'display:inline; margin: 0px 0px 10px 17px'),uiOutput("info13", inline = TRUE), downloadButton("downloadGraph13", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 0px 17px; font-size:90%'), '<br/>'
+               )
              ),
              column(6,
-             ),
-           ),
-           fluidRow(
-             HTML(
-               paste('<br/>',
-                     h3("Modern Contraceptive Prevalence", style='display:inline; margin: 0px 0px 10px 17px'),uiOutput("info14", inline = TRUE), '<br/>')
-             ),
-             column(6, downloadButton("downloadGraph15", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 10px 0px; font-size:90%'), 
-                    plotOutput("graph15", width = "60%", height = "200px")
-             ),
-             column(6,downloadButton("downloadGraph16", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 10px 0px; font-size:90%'), 
-                    plotOutput("graph16",  width = "60%", height = "200px")
+                    plotOutput("graph13", width = "75%", height = "400px")
              ),
              column(6,
-             ),
-           ),
-             fluidRow(
-               HTML(
-                 paste('<br/>', 
-                       h3("Traditional Contraceptive Prevalence", style='display:inline; margin: 0px 0px 10px 17px'), uiOutput("info15", inline = TRUE), '<br/>')
-               ),
-               column(6, downloadButton("downloadGraph17", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 10px 0px; font-size:90%'), 
-                      plotOutput("graph17", width = "60%", height = "200px")
-               ),
-               column(6, downloadButton("downloadGraph18", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 10px 0px; font-size:90%'), 
-                      plotOutput("graph18", width = "60%", height = "200px")
-               ),
-               column(6,
-               ),
-             ),
-           fluidRow(
-             HTML(
-               paste('<br/>', 
-                     h3("Unmet Need", style='display:inline; margin: 0px 0px 10px 17px'), uiOutput("info16", inline=TRUE), '<br/>')
-             ),
-             column(6, downloadButton("downloadGraph19", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 10px 0px; font-size:90%'), 
-                    plotOutput("graph19", width = "60%", height = "200px")
-             ),
-             column(6, downloadButton("downloadGraph20", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 10px 0px; font-size:90%'), 
-                    plotOutput("graph20", width = "60%", height = "200px")
-             ),
-           ),
-           fluidRow(
-             HTML(paste('<br/>',
-                        h3("Condom Use at Last Sex", style='display:inline; margin: 0px 0px 10px 17px'), uiOutput("info17", inline=TRUE), '<br/>')
-             ),
-             column(6, downloadButton("downloadGraph21", "Download Graph", style='display:block; height:30px; width:125px; color:#636b6f; align:center; padding:5px 4px 4px 4px; margin:20px 0px 0px 17px; font-size:90%'),
-                    plotOutput("graph21", width = "60%", height = "120px")
              ),
            ),
            fluidRow(
@@ -328,10 +286,9 @@ ui <- navbarPage(
              ),
              column(12,
                     tags$h1(""), "If you woud like to learn more, the A&Y dataset used to create this App can be found on the ",
-                    tags$a(href = "https://www.fp2030.org/data-hub/progress", "FP2030 Site"),
+                    tags$a(href = https://www.fp2030.org/data-hub/progress, "FP2030 Site"),
                     tags$h2(""), "The code used to create this App can be found on our",
-                    tags$a(href = "https://github.com/familyplanning2020/FP2030AYAPP", "GitHub Account"),
-                    tags$h3(""), "This app only includes data for low and lower-middle income countries as classified by the World Bank.",
+                    tags$a(href = https://github.com/familyplanning2020/FP2030AYAPP, "GitHub Account")
              ),  
            )
            
@@ -349,9 +306,9 @@ ui <- navbarPage(
              ),
              column(12,
                     tags$h1(""), "If you woud like to learn more, the A&Y dataset used to create this App can be found on the ",
-                    tags$a(href = "https://www.fp2030.org/data-hub/progress", "FP2030 Site"),
+                    tags$a(href = https://www.fp2030.org/data-hub/progress, "FP2030 Site"),
                     tags$h2(""), "The code used to create this App can be found on our",
-                    tags$a(href = "https://github.com/familyplanning2020/FP2030AYAPP", "GitHub Account")
+                    tags$a(href = https://github.com/familyplanning2020/FP2030AYAPP, "GitHub Account")
              ),  
              
            )
@@ -697,8 +654,6 @@ server <- function(input, output) {
   
   
   #NEW PLOT
-  # Modern Contraceptive Use: Unmarried Women
-  
   ayfp_mod_res <- reactive({
     res <- ayfp %>% select(2,3,8, 9) %>% filter(ayfp$Country == input$country)
     req(nrow(res) > 0)
@@ -1008,9 +963,6 @@ server <- function(input, output) {
       dev.off()
     })
   
-  #ALL THE GRAPHS BELOW ARE THE COMPARE GRAPHS 
-  
-  #AYPop Graph 
   ay_res_compare <- reactive({
     res <- aypopdata.long2 %>% filter(Country %in% input$country_compare) # we need to this
     req(nrow(res) > 0)
@@ -1090,7 +1042,7 @@ server <- function(input, output) {
   })
   output$downloadGraph13 <- downloadHandler(
     filename = function() {
-      paste("Sexual Activity Compare", "png", sep = ".")
+      paste("Adolescents and Youth_Compare", "png", sep = ".")
     },
     content = function(file) {
       png(file, width = 980, height = 400)
@@ -1098,367 +1050,6 @@ server <- function(input, output) {
       dev.off()
     })
   
-  #Ever Sexual Activity -- COMPARE
-  ayfp_never_res_compare <- reactive({
-    res5 <- ayfp_compare %>% select(2,3,4,5) %>% filter(Country %in% input$country_compare)
-    req(nrow(res5) > 0)
-    ayfp_never_res
-    res5$"15-19" <- res5$"Never have had sex older youth aged 15-19"
-    res5$"20-24" <- res5$"Never have had sex older youth aged 20-24"
-    res5.long <- res5 %>% gather("Age.Group", "Percent",  "15-19", "20-24")
-    res5.long
-    res5.long %>% filter(res5.long$Percent>0)
-    
-  })
-  
-  output$graph14 <- renderPlot({
-    source<- ayfp_never_res_compare() 
-    never_sex_compare<- (ggplot(ayfp_never_res_compare(), aes(x= reorder(`Age.Group`,`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity") +
-      coord_flip() + theme_classic() + 
-      geom_text(aes(label=`Percent`), color="black", size=3.5) + 
-      scale_fill_manual(values = cbp3, name = "Age Group") + 
-      labs(title= "% Never Had Sex") +
-      facet_grid(vars(Country)) + theme(axis.line.y=element_blank(),
-                                        axis.text.y=element_blank(),
-                                        axis.title.x=element_blank(),
-                                        axis.title.y=element_blank(),
-                                        axis.ticks.y=element_blank(),
-                                        axis.text.x =element_blank(),
-                                        axis.ticks.x =element_blank(),
-                                        axis.line.x =element_blank(),
-                                        legend.position = "bottom") +labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$never_sex_compare<- never_sex_compare
-    print(never_sex_compare)
-    
-  })
-  output$downloadGraph14 <- downloadHandler(
-    filename = function() {
-      paste("Never Had Sex Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$never_sex_compare)
-      dev.off()
-    })
-  
-  #MCP UMSA -- COMPARE
-  ayfp_mod_res_compare <- reactive({
-    res <- ayfp_compare %>% select(2,3,8, 9) %>% filter(Country %in% input$country_compare)
-    req(nrow(res) > 0)
-    res$`15-19` <- res$`MCPR for unmarried sexually active adolescents (15-19)**`
-    res$`20-24` <- res$`MCPR for unmarried sexually active youth (20-24)**`
-    res.long <- res %>% gather("Age.Group", "Percent", "15-19" , "20-24")
-    res.long
-    res.long %>% filter(res.long$Percent>0)
-    
-  })
-  
-  output$graph15 <- renderPlot({
-    source <- ayfp_mod_res_compare()
-    mcp_aw_compare <- (ggplot(ayfp_mod_res_compare(), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity")+
-      coord_flip() + theme_classic() + 
-      geom_text(aes(label=`Percent`), color="black", size=3.5) + 
-      labs( subtitle = "MCP(%) Among Unmarried Sexually Active") +  theme(plot.subtitle=element_text(size=13, color="black")) +
-      scale_fill_manual(values = cbp3, name = "Age Group") + facet_grid(vars(Country))+
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "bottom") +labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$mcp_aw_compare <- mcp_aw_compare
-    print(mcp_aw_compare)
-    
-  })
-  output$downloadGraph15 <- downloadHandler(
-    filename = function() {
-      paste("MCP- UMSA Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$mcp_aw_compare)
-      dev.off()
-    })
-  #END PLOT
-  
-  #MCP Married -- COMPARE
-  ayfp_mod_marr_compare<- reactive({
-    res <- ayfp_compare %>% select(2,3,10, 11, 12) %>% filter(Country %in% input$country_compare)
-    req(nrow(res) > 0)
-    
-    res$`15-19` <- res$`MCPR for married adolescents (15-19)`
-    res$`20-24` <- res$`MCPR for married youth (20-24)`
-    res$`15-24` <- res$`MCPR for married adolescent and youth (15-24)`
-    
-    res.long <- res %>% gather("Age.Group", "Percent", "15-19" , "20-24", "15-24")
-    res.long
-    res.long %>% filter(res.long$Percent>0)
-    
-  })
-  
-  output$graph16 <- renderPlot({
-    source<- ayfp_mod_marr_compare()
-    mcp_mw_compare <- (ggplot(ayfp_mod_marr_compare(), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity") +
-      coord_flip() + theme_classic() + geom_text(aes(label= round(`Percent`,1)), color="black", size=3.5) + 
-      labs(subtitle = "MCP(%) Among Married") +  theme(plot.subtitle=element_text(size=13, color="black")) +
-      scale_fill_manual(values = cbp5, name = "Age Group") + facet_grid(vars(Country))+
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "bottom") +
-      labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$mcp_mw_compare <- mcp_mw_compare
-    print(mcp_mw_compare)
-    
-    
-  })
-  output$downloadGraph16 <- downloadHandler(
-    filename = function() {
-      paste("MCP- Married Women Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$mcp_mw_compare)
-      dev.off()
-    })
-  #END PLOT
-  
-  #Traditional Contraceptive Prevalence UMSA -- COMPARE
-  ayfp_trad_unmarr_compare<- reactive({
-    res <- ayfp_compare %>% select(2,3,13,14) %>% filter(Country %in% input$country_compare)
-    req(nrow(res) > 0)
-    res$`15-19` <- res$`% of unmarried sexually active** older adolescents aged 15-19 using a traditional method`
-    res$`20-24` <- res$`% of unmarried sexually active** older youth aged 20-24 using a traditional method`
-    res.long <- res %>% gather("Age.Group", "Percent", "15-19", "20-24")
-    res.long %>% filter(res.long$Percent>0)
-    
-  })
-  
-  output$graph17 <- renderPlot({
-    source <- ayfp_trad_unmarr_compare()
-    tcp_aw_compare <- (ggplot(ayfp_trad_unmarr_compare(),aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity") +
-      coord_flip() + theme_classic() + geom_text(aes(label=`Percent`), color="black", size=3.5) + 
-      labs(subtitle = "TCP(%) Among Unmarried Sexually Active") + theme(plot.subtitle=element_text(size=13, color="black")) +
-      scale_fill_manual(values = cbp3, name = "Age Group") + facet_grid(vars(Country))+
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "bottom") +labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$tcp_aw_compare <- tcp_aw_compare
-    print(tcp_aw_compare)
-    
-    
-  })
-  output$downloadGraph17 <- downloadHandler(
-    filename = function() {
-      paste("TCP- UMSA Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$tcp_aw_compare)
-      dev.off()
-    })
-  #END PLOT
-  
-  #Traditional Contraceptive Prevalence Married -- COMPARE
-  ayfp_trad_marr_compare<- reactive({
-    res <- ayfp_compare %>% select(2,3,15,16,17) %>% filter(Country %in% input$country_compare)
-    req(nrow(res) > 0)
-    res$`15-19` <- res$`% of married older adolescents aged 15-19 using a traditional method`
-    res$`20-24` <- res$`% of married older youth aged 20-24 using a traditional method`
-    res$`15-24` <- res$`% of married youth aged 15-24 using a traditional method`
-    res.long <- res %>% gather("Age.Group", "Percent", "15-19", "20-24", "15-24")
-    res.long %>% filter(res.long$Percent>0)
-    
-  })
-  
-  output$graph18 <- renderPlot({
-    source<- ayfp_trad_marr_compare()
-    tcp_mw_compare <- (ggplot(ayfp_trad_marr_compare(), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity") +
-      coord_flip() + theme_classic() + geom_text(aes(label=`Percent`), color="black", size=3.5) + 
-      labs(subtitle = "TCP(%) Among Married") + theme(plot.subtitle=element_text(size=13, color="black")) +
-      scale_fill_manual(values = cbp5, name = "Age Group") + facet_grid(vars(Country))+
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "bottom")+labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$tcp_mw_compare <- tcp_mw_compare
-    print(tcp_mw_compare)
-    
-    
-  })
-  output$downloadGraph18 <- downloadHandler(
-    filename = function() {
-      paste("TCP- Married Women Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$tcp_mw_compare)
-      dev.off()
-    })
-  #END PLOT
-  
-  #Unmet Need UMSA -- COMPARE
-  ayfp_unmet_unmarr_compare<- reactive({
-    res <- ayfp_compare %>% select(2,3,19,20,21) %>% filter(Country %in% input$country_compare)
-    req(nrow(res) > 0)
-    res$`15-19` <- res$"Unmet need 15-19 UMSA"
-    res$`20-24` <- res$"Unmet need 20-24 UMSA"
-    res$`15-24` <- res$"Unmet need 15-24 UMSA"
-    res.long <- res %>% gather("Age.Group", "Percent", "15-19", "20-24", "15-24")
-    res.long %>% filter(res.long$Percent>0)
-    
-  })
-  
-  output$graph19 <- renderPlot({
-    source <- ayfp_unmet_unmarr_compare()
-    un_aw_compare <- (ggplot(ayfp_unmet_unmarr_compare(), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity") +
-      coord_flip() + theme_classic() + geom_text(aes(label=`Percent`), color="black", size=3.5) + 
-      labs(subtitle = "% Unmet Need Among Unmarried Sexually Active") + theme(plot.subtitle=element_text(size=13, color="black")) +
-      scale_fill_manual(values = cbp5, name = "Age Group") + facet_grid(vars(Country))+
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "bottom")+labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$un_aw_compare <- un_aw_compare
-    print(un_aw_compare)
-    
-    
-  })
-  output$downloadGraph19 <- downloadHandler(
-    filename = function() {
-      paste("Unmet Need - UMSA Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$un_aw_compare)
-      dev.off()
-    })
-  #END PLOT
-  
-  #Unmet Need Married -- COMPARE
-  ayfp_unmet_marr_compare<- reactive({
-    res <- ayfp_compare %>% select(2,3,22,23,24) %>% filter(Country %in% input$country_compare)
-    req(nrow(res) > 0)
-    res$`15-19` <- res$"Unmet need 15-19 Married"
-    res$`20-24` <- res$"Unmet need 20-24 Married"
-    res$`15-24` <- res$"Unmet need 15-24 Married"
-    res.long <- res %>% gather("Age.Group", "Percent", "15-19", "20-24", "15-24")
-    res.long %>% filter(res.long$Percent>0)
-    
-  })
-  
-  output$graph20 <- renderPlot({
-    source <- ayfp_unmet_marr_compare()
-    un_mw_compare <- (ggplot(ayfp_unmet_marr_compare(), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity") +
-      coord_flip() + theme_classic() + geom_text(aes(label=`Percent`), color="black", size=3.5) + 
-      labs(subtitle = "% Unmet Need Among Married") + theme(plot.subtitle=element_text(size=13, color="black")) +
-      scale_fill_manual(values = cbp5, name = "Age Group") + facet_grid(vars(Country))+
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "bottom")+labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$un_mw_compare <- un_mw_compare
-    print(un_mw_compare)
-    
-    
-  })
-  output$downloadGraph20 <- downloadHandler(
-    filename = function() {
-      paste("Unmet Need - Married Women Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$un_mw_compare)
-      dev.off()
-    })
-  #END PLOT
-  
-  #Condom Use -- COMPARE
-  ayfp_con_res_compare<- reactive({
-    res <- ayfp_compare %>% select(2,3,29) %>% filter(Country %in% input$country_compare)
-    req(nrow(res) > 0)
-    
-    res$`15-24` <- res$`Condom use during last sex: 15-24 year olds`
-    res.long <- res %>% gather("Age.Group", "Percent", "15-24")
-    res.long %>% filter(res.long$Percent>0)
-    
-  })
-  
-  output$graph21 <- renderPlot({
-    source <- ayfp_con_res_compare()
-    fig_compare <- (ggplot(ayfp_con_res_compare(), aes(x= reorder(`Age.Group`, -`Percent`), y = `Percent`, fill = `Age.Group`))) + 
-      geom_bar(stat = "identity")+
-      coord_flip() + theme_classic() + geom_text(aes(label=`Percent`), color="black", size=3.5) + 
-      labs(subtitle = "% Condom Use During Last Sex") +  theme(plot.subtitle=element_text(size=13, color="black")) +
-      scale_fill_manual(values = cbp4, name = "Age Group") + facet_grid(vars(Country))+
-      theme(axis.line.y=element_blank(),
-            axis.text.y=element_blank(),
-            axis.title.x=element_blank(),
-            axis.title.y=element_blank(),
-            axis.ticks.y=element_blank(),
-            axis.text.x =element_blank(),
-            axis.ticks.x =element_blank(),
-            axis.line.x =element_blank(),
-            legend.position = "bottom") +labs(caption=paste0("Source: ",source$Source), size=7)
-    
-    vals$fig_compare <- fig_compare
-    print(fig_compare)
-    
-    
-  })
-  output$downloadGraph21 <- downloadHandler(
-    filename = function() {
-      paste("Condom Use at Last Sex Compare", "png", sep = ".")
-    }, 
-    content = function(file) {
-      png(file, width = 980, height = 400) 
-      print(vals$fig_compare)
-      dev.off()
-    })
-  #END PLOT
   
 }
 
